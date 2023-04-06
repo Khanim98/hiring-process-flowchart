@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+# Project Title: Job Hiring Process Flowchart
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Description
 
-## Available Scripts
+Welcome to our job hiring process flowchart! We've designed this flowchart to help you visualize our hiring process and understand the different steps involved.
 
-In the project directory, you can run:
+We understand that every company's hiring process is unique, so we've made this flowchart customizable to meet your needs. You can easily add, delete, or edit nodes to reflect your company's hiring process.
 
-### `npm start`
+And to make it even more convenient, we've added a feature that automatically saves your changes to localStorage. This means that even if you refresh the page or come back to it later, your customized flowchart will be exactly the same as you left it.
+We hope that you find this flowchart helpful in understanding our hiring process.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Instalation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+ ### Clone the repository:
 
-### `npm test`
+git clone https://github.com/Khanim98/hiring-process-flowchart.git
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Install dependencies:
 
-### `npm run build`
+npm install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Start the server:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+npm start
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Navigate to http://localhost:3000 in your web browser.
 
-### `npm run eject`
+## Usage:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+You can move nodes in any order you want, simply by clicking and dragging them to the desired location. And if you want to reorganize the connections between nodes, you can do so by dragging from the edges of one node to the edges of another.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Creating new nodes is easy too - just double-click on the screen and a new node will be created with default text. To edit the text of a node, double-click on the node to open a modal window, where you can edit the text and save it by clicking "Add Operation". Your changes will be reflected in the node's text immediately.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+And to make things even more convenient, we've added a feature that automatically saves your changes to localStorage. So if you refresh the page or come back to it later, your customized flowchart will be exactly as you left it, with all your changes and node positions preserved.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## Code explanation: 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+In my code, I leveraged the power of the "flowchart-react" library to create an interactive and customizable flowchart tool. To enable users to add new nodes to the flowchart, I utilized the onDoubleClick function, which listens for a double-click event on the chart area and creates a new node.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+To ensure that all user data is saved and can be retrieved across different sessions, I implemented a storage solution using both the Redux Toolkit store and the localStorage API. Whenever a new node is created or a node's text is edited, I update the state using the setNodes function and dispatch an action to update the Redux store. I also call the localStorage.setItem function to store the updated node data in the browser's localStorage.
 
-### Code Splitting
+To retrieve the stored data when the user returns to the flowchart, I used the useEffect hook to fetch the data from the localStorage and update the state accordingly. This allows the user to resume where they left off, with all their changes and additions intact.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+When a user wants to edit a node's text, they simply double-click on the node, which triggers the onNodeDoubleClick function. This function retrieves the node that was clicked on and sets it to the editedNode state, which opens a modal window for editing the node's text. Upon clicking the "Add Operation" button, the editedNode state is mapped over the nodes array, so that the node with the matching id is updated with the new text, while all other nodes remain the same.
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Overall, I aimed to create a seamless and intuitive user experience with my flowchart tool, making it easy for users to customize their charts, save their progress, and pick up right where they left off.
