@@ -1,21 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
-import initialState from "../features/initialState";
+import rawInitialState from "../features/initialState";
+import {LOCALSTORAGE_NODES_KEY, LOCALSTORAGE_CONNS_KEY} from "../constants"
+import {readFromStorage, saveToStorage} from "../utils/storage"
+
+const initialState = {
+  conns: readFromStorage(LOCALSTORAGE_CONNS_KEY) || rawInitialState.conns,
+  nodes: readFromStorage(LOCALSTORAGE_NODES_KEY) || rawInitialState.nodes,
+}
 
 export const flowchartSlice = createSlice({
   name: 'flowchartData',
   initialState,
   reducers: {
-    setNodesAndConnections: (state, action) => {
-      state.nodes = action.payload.nodes;
-      state.conns = action.payload.conns;
-      const data = JSON.stringify({ 
-        nodes: action.payload.nodes,
-        conns: action.payload.conns, 
-      });
-      localStorage.setItem("flowchartData", data);
+    setNodes: (state, action) => {
+      const data = action.payload
+      state.nodes = data;
+      saveToStorage(LOCALSTORAGE_NODES_KEY, data);
+    },
+    setConns: (state, action) => {
+      const data = action.payload
+      state.conns = data;
+      saveToStorage(LOCALSTORAGE_CONNS_KEY, data);
     },
   },
 })
 
-export const { setNodesAndConnections } = flowchartSlice.actions;
+export const { setNodes, setConns } = flowchartSlice.actions;
 export default flowchartSlice.reducer;

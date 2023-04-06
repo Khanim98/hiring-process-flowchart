@@ -2,18 +2,14 @@ import React, { useState, useEffect } from "react";
 import Flowchart from "flowchart-react";
 import Modal from 'react-modal';
 import "./index.css";
-import { setNodesAndConnections  } from "./features/flowchartSlice";
+import { setConns, setNodes } from "./features/flowchartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const App = () => {
-  const [modalIsOpen, setIsOpen] = React.useState(false);
-  const dispatch = useDispatch();
-  const [nodes, setNodes] = useState([]);
-  const [conns, setConns] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editedNode, setEditedNode] = useState(null);
-  const [hasLoadedData, setHasLoadedData] = useState(false); 
-  const initialNodes = useSelector(state => state.flowchartData.nodes)
-  const initialConns = useSelector(state => state.flowchartData.conns)
+  const {conns, nodes} = useSelector(state => state.flowchartData)
+  const dispatch = useDispatch();
 
   const handleDoubleClick = (event, zoom) => {
     const point = {
@@ -40,21 +36,10 @@ const App = () => {
         title: "Enter Your Operation",
         type: "operation",
       };
-    }
-    setNodes((prevState) => [...prevState, nodeData]);
-  }
 
-  useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem("flowchartData"));
-    if (savedData) {
-      setNodes(savedData.nodes);
-      setConns(savedData.conns);
-    }else {
-      setNodes(initialNodes)
-      setConns(initialConns)
     }
-    setHasLoadedData(true)
-  }, []);
+    dispatch(setNodes([...nodes, nodeData]));
+  }
 
   const customModalStyles = {
     content: {
@@ -68,25 +53,20 @@ const App = () => {
   };
 
   function openModal() {
-    setIsOpen(true);
+    setModalIsOpen(true);
   }
 
   function closeModal() {
-    setIsOpen(false);
+    setModalIsOpen(false);
   }
-
-  useEffect(() => {
-    if (!hasLoadedData) return;
-    dispatch(setNodesAndConnections({nodes, conns}))
-  }, [nodes, conns]);
 
   return (
     <>
       <h1>Job Hiring Process Flowchart</h1>
       <Flowchart
         onChange={(nodes, connections) => {
-          setNodes(nodes);
-          setConns(connections);
+          dispatch(setNodes(nodes));
+          dispatch(setConns(connections));
         }}
         style={{ width: 1000, height: 1000, }}
         nodes={nodes}
@@ -111,11 +91,8 @@ const App = () => {
           />
           <button 
             onClick={()=>{
-              setNodes(nodes => {
-                return nodes.map(node => node.id === editedNode.id ? editedNode : node);
-              })
+              dispatch(setNodes(nodes.map(node => node.id === editedNode.id ? editedNode : node)))
               closeModal();
-              console.log("from click", nodes)
             }}
             className="addOperation"
           >

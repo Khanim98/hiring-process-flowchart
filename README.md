@@ -40,7 +40,11 @@ In my code, I leveraged the power of the "flowchart-react" library to create an 
 
 To ensure that all user data is saved and can be retrieved across different sessions, I implemented a storage solution using both the Redux Toolkit store and the localStorage API. Whenever a new node is created or a node's text is edited, I update the state using the setNodes function and dispatch an action to update the Redux store. I also call the localStorage.setItem function to store the updated node data in the browser's localStorage.
 
-To retrieve the stored data when the user returns to the flowchart, I used the useEffect hook to fetch the data from the localStorage and update the state accordingly. This allows the user to resume where they left off, with all their changes and additions intact.
+To facilitate seamless user experience, I have implemented the use of initialState in flowchartSlice to retrieve stored data from the local storage whenever the user returns to the flowchart. This approach ensures that the page displays the default initialState when first opened and subsequently updates to reflect any changes made by the user.
+
+By automatically pushing any changes to the local storage and updating the initialState accordingly, the user's progress is automatically preserved even when they refresh the page. This feature enables the user to resume from where they left off with all their changes and additions intact, without losing any progress made.
+
+Overall, the use of initialState in flowchartSlice to retrieve stored data from the local storage, and update changes seamlessly ensures a positive user experience, while also maintaining the integrity and security of the user's data.
 
 When a user wants to edit a node's text, they simply double-click on the node, which triggers the onNodeDoubleClick function. This function retrieves the node that was clicked on and sets it to the editedNode state, which opens a modal window for editing the node's text. Upon clicking the "Add Operation" button, the editedNode state is mapped over the nodes array, so that the node with the matching id is updated with the new text, while all other nodes remain the same.
 
