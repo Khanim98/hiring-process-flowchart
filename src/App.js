@@ -11,6 +11,7 @@ const App = () => {
   const [nodes, setNodes] = useState([]);
   const [conns, setConns] = useState([]);
   const [editedNode, setEditedNode] = useState(null);
+  const [hasLoadedData, setHasLoadedData] = useState(false); 
   const initialNodes = useSelector(state => state.flowchartData.nodes)
   const initialConns = useSelector(state => state.flowchartData.conns)
 
@@ -41,12 +42,6 @@ const App = () => {
       };
     }
     setNodes((prevState) => [...prevState, nodeData]);
-    dispatch(
-      setNodesAndConnections({
-        nodes: [...nodes, nodeData],
-        conns: conns,
-      })
-    );
   }
 
   useEffect(() => {
@@ -58,6 +53,7 @@ const App = () => {
       setNodes(initialNodes)
       setConns(initialConns)
     }
+    setHasLoadedData(true)
   }, []);
 
   const customModalStyles = {
@@ -70,7 +66,6 @@ const App = () => {
       transform: 'translate(-50%, -50%)',
     },
   };
-  
 
   function openModal() {
     setIsOpen(true);
@@ -80,7 +75,10 @@ const App = () => {
     setIsOpen(false);
   }
 
-  console.log("in render", nodes)
+  useEffect(() => {
+    if (!hasLoadedData) return;
+    dispatch(setNodesAndConnections({nodes, conns}))
+  }, [nodes, conns]);
 
   return (
     <>
@@ -89,7 +87,6 @@ const App = () => {
         onChange={(nodes, connections) => {
           setNodes(nodes);
           setConns(connections);
-          dispatch(setNodesAndConnections({nodes, conns:connections}))
         }}
         style={{ width: 1000, height: 1000, }}
         nodes={nodes}
